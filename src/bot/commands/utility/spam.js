@@ -16,7 +16,7 @@ module.exports = {
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-        await interaction.followUp("💊 ✅ EVIL FLOYD ACTIVATED: NIGGA SPAMMING MODE ON ✅ 💊");
+        await interaction.followUp("💊 ✅ GEORGE DROYD ACTIVATED: NIGGA SPAMMING MODE ON ✅ 💊");
 
         for (let i = 0; i < 5; ++i) {
             await interaction.followUp(userMsg);

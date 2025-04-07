@@ -24,11 +24,11 @@ module.exports = {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral })
 
         if (isNaN(amount) || amount > 5) {
-            await interaction.followUp("💊 ❌ EVIL FLOYD ERROR: USE A CORRECT NUMBER OR IMMA BLAST YO ASS NIGGA ❌ 💊");
+            await interaction.followUp("💊 ❌ GEORGE DROYD ERROR: USE A CORRECT NUMBER OR IMMA BLAST YO ASS NIGGA ❌ 💊");
             return;
         }
 
-        await interaction.followUp("💊 ✅ EVIL FLOYD ACTIVATED: THIS NIGGA IS GETTING PINGED ✅ 💊");
+        await interaction.followUp("💊 ✅ GEORGE DROYD ACTIVATED: THIS NIGGA IS GETTING PINGED ✅ 💊");
 
         for (let i = 0; i < amount; ++i) {
             await interaction.followUp(`<@${user.id}>`);

@@ -42,7 +42,7 @@ client.on(Events.InteractionCreate, async interaction => {
         logWrite(`ABORT ❌ /${interaction.commandName} used by ${interaction.member.user.username}`);
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        await interaction.followUp("💊 <:EVIL:1358015392332779602> EVIL FLOYD ERROR: EVIL FLOYD DOES NOT RESPOND TO FAKE ASS NIGGAS <:EVIL:1358015392332779602> 💊");
+        await interaction.followUp("💊 ⛔ GEORGE DROYD ERROR: GEORGE DROYD DOES NOT RESPOND TO FAKE ASS NIGGAS ⛔ 💊");
         return;
     }
 

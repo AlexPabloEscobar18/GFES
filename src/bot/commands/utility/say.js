@@ -16,7 +16,7 @@ module.exports = {
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-        await interaction.followUp("💊 ✅ EVIL FLOYD ACTIVATED: YO VOICE IS HEARD ✅ 💊");
+        await interaction.followUp("💊 ✅ GEORGE DROYD ACTIVATED: YO VOICE IS HEARD ✅ 💊");
 
         await interaction.followUp(msg);
     },

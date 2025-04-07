@@ -14,9 +14,9 @@ module.exports = {
         
         // check if log content did not exceed 2000 characters if so send logs as a file
         if (logFileContent.length > 2000) {
-            await interaction.followUp({ content: '💊 📝 EVIL FLOYD ACTIVATED 📝 💊', files: [{ name: 'logs.txt', attachment: Buffer.from(logFileContent) }] });
+            await interaction.followUp({ content: '💊 📝 GEORGE DROYD ACTIVATED 📝 💊', files: [{ name: 'logs.txt', attachment: Buffer.from(logFileContent) }] });
             return;
         }
-        await interaction.followUp(`\`💊 📝 EVIL FLOYD ACTIVATED 📝 💊\n${logFileContent}\``);
+        await interaction.followUp(`\`💊 📝 GEORGE DROYD ACTIVATED 📝 💊\n${logFileContent}\``);
     },
 };

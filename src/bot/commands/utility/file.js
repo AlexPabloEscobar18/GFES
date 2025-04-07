@@ -35,18 +35,18 @@ module.exports = {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         if (quantity > 5 || quantity < 1) {
-            await interaction.followUp("💊 ❌ EVIL FLOYD ERROR: MAXIMUM QUANTITY IS 5 FOOL ❌ 💊");
+            await interaction.followUp("💊 ❌ GEORGE DROYD ERROR: MAXIMUM QUANTITY IS 5 FOOL ❌ 💊");
             return;
         }
 
         if (!file) {
-            await interaction.followUp("💊 ❌ EVIL FLOYD ERROR: PUT A VALID FILE YOU BITCH ASS NIGGA ❌ 💊");
+            await interaction.followUp("💊 ❌ GEORGE DROYD ERROR: PUT A VALID FILE YOU BITCH ASS NIGGA ❌ 💊");
             return;
         }
 
         try {    
             if (file.contentType === "audio/mpeg") {
-                await interaction.followUp("💊 🕒 EVIL FLOYD IS PROCCESSIN YO BEAT 🕒 💊");
+                await interaction.followUp("💊 🕒 GEORGE DROYD IS PROCCESSIN YO BEAT 🕒 💊");
                 let response = await fetch(file.url);
                 let arrayBuffer = await response.arrayBuffer();
 
@@ -67,7 +67,7 @@ module.exports = {
         .setImage(file.url)
         .setTimestamp()
 
-        await interaction.followUp("💊 ✅ EVIL FLOYD ACTIVATED: YO SHIT IS UP ✅ 💊");
+        await interaction.followUp("💊 ✅ GEORGE DROYD ACTIVATED: YO SHIT IS UP ✅ 💊");
 
         for (let i = 0; i < quantity; ++i) {
             await interaction.followUp({ embeds: [embed] });
