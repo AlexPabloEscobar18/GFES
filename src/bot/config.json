@@ -1,0 +1,7 @@
+{
+  "token": "TOKEN_GOES_HERE",
+  "clientId": "CLIENT_ID_GOES_HERE (AS STRING)",
+  "allowedUserIDs": [
+    "ALLOWED_USERS_DISCORD_IDS (AS NUMBER)"
+  ]
+}
