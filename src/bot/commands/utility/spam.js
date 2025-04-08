@@ -1,8 +1,8 @@
-const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('spam')
+        .setName("spam")
         .setDescription("spams user's message 5 times")
         .addStringOption(option =>
             option
@@ -12,7 +12,7 @@ module.exports = {
         )
         .setContexts(InteractionContextType.Guild),
     async execute(interaction) {
-        const userMsg = interaction.options.getString('message_text');
+        const userMsg = interaction.options.getString("message_text");
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 

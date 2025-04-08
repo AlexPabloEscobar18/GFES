@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('say')
-        .setDescription('say something in chat')
+        .setName("say")
+        .setDescription("say something in chat")
         .addStringOption(option =>
             option
                 .setName("message")

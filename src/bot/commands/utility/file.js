@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, InteractionContextType, MessageFlags, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, MessageFlags, EmbedBuilder } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('file_upload')
-        .setDescription('send a file to the channel')
+        .setName("file_upload")
+        .setDescription("send a file to the channel")
         .addAttachmentOption(option =>
             option
                 .setName("file")
@@ -18,8 +18,26 @@ module.exports = {
         )
         .addStringOption(option =>
             option
+                .setName("title")
+                .setDescription("title of the embed")
+                .setRequired(false)
+        )
+        .addStringOption(option =>
+            option
                 .setName("thumbnail_url")
-                .setDescription("url to the thumbnail")
+                .setDescription("url to the thumbnail (small image at the top right corner), you can use static image or gif")
+                .setRequired(false)
+        )
+        .addStringOption(option =>
+            option
+                .setName("description")
+                .setDescription("description of the embed")
+                .setRequired(false)
+        )
+        .addStringOption(option =>
+            option
+                .setName("footer")
+                .setDescription("footer of the embed")
                 .setRequired(false)
         )
         .setContexts(InteractionContextType.Guild),
@@ -28,19 +46,55 @@ module.exports = {
         const quantity = interaction.options.getInteger("quantity") || 1;
         let thumbnail = interaction.options.getString("thumbnail_url") || null;
 
-        if (thumbnail === null) {
-            thumbnail = "https://cdn.discordapp.com/avatars/1357710540297863198/0cd78ffaf78611e0c065b46223bee91a.png?size=512";
-        }
-        
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
+        const embed = new EmbedBuilder();
+        embed.setColor("DarkRed")
+        embed.setTitle(interaction.options.getString("title") !== null ? interaction.options.getString("title") : "GEORGE DROYD")
+
+        if (interaction.options.getString("description") !== null) embed.setDescription(interaction.options.getString("description"));
+        if (interaction.options.getString("footer") !== null) embed.setFooter({ text: interaction.options.getString("footer") });
+        
+        embed.setTimestamp()
+
+        if (thumbnail === null) {
+            thumbnail = `https://cdn.discordapp.com/avatars/${interaction.client.user.id}/${interaction.client.user.avatar}.png?size=512`;
+        } else { // making sure user added a valid link
+            try {
+                const dummy = await fetch(thumbnail, { method: "HEAD" });
+                if (!dummy.ok) {
+                    throw new Error();
+                }
+            } catch (error) {
+                await interaction.followUp("💊 ❌ GEORGE DROYD ERROR: YOUR THUMBNAIL LINK IS DEAD ❌ 💊");
+                return;
+            }
+        }
+        embed.setThumbnail(thumbnail)
+
         if (quantity > 5 || quantity < 1) {
-            await interaction.followUp("💊 ❌ GEORGE DROYD ERROR: MAXIMUM QUANTITY IS 5 FOOL ❌ 💊");
+            await interaction.followUp("💊 ❌ GEORGE DROYD ERROR: MAXIMUM QUANTITY IS 5 NIGGA! ❌ 💊");
             return;
         }
 
         if (!file) {
             await interaction.followUp("💊 ❌ GEORGE DROYD ERROR: PUT A VALID FILE YOU BITCH ASS NIGGA ❌ 💊");
+            return;
+        }
+
+        try {
+            if (file.contentType === "video/quicktime") {
+                await interaction.followUp("💊 🕒 GEORGE DROYD IS PROCCESSIN YO VIDEO 🕒 💊");
+                let response = await fetch(file.url);
+                let arrayBuffer = await response.arrayBuffer();
+
+                for (let i = 0; i < quantity; ++i) {
+                    await interaction.followUp({ files: [{ name: file.name, attachment: Buffer.from(arrayBuffer) }] });
+                }
+                return;
+            }
+        } catch (error) {
+            await interaction.followUp(`💊 ⚠️ DAT SHI AIN'T POSSIBLE MAN... DROYD FAILED TO UPLOAD VIDEO BCUZ: (${error}) ⚠️ 💊`);
             return;
         }
 
@@ -56,18 +110,15 @@ module.exports = {
                 return;
             }
         } catch (error) {
-            await interaction.followUp(`💊 ⚠️ DAT SHI AIN'T POSSIBLE MAN... FLOYD FAILED TO UPLOAD AUDIO BCUZ: (${error}) ⚠️ 💊`);
+            await interaction.followUp(`💊 ⚠️ DAT SHI AIN'T POSSIBLE MAN... DROYD FAILED TO UPLOAD AUDIO BCUZ: (${error}) ⚠️ 💊`);
             return;
         }
 
-        const embed = new EmbedBuilder()
-        .setColor("DarkRed")
-        .setTitle("<:EVIL:1358015392332779602> FLOYD ATTACHMENT <:EVIL:1358015392332779602>")
-        .setThumbnail(thumbnail)
-        .setImage(file.url)
-        .setTimestamp()
-
         await interaction.followUp("💊 ✅ GEORGE DROYD ACTIVATED: YO SHIT IS UP ✅ 💊");
+
+        if (file.contentType.split("/")[0] === "image") {
+            embed.setImage(file.url)
+        }
 
         for (let i = 0; i < quantity; ++i) {
             await interaction.followUp({ embeds: [embed] });

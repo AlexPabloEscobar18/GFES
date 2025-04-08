@@ -1,9 +1,9 @@
-const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType, MessageFlags } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('ping')
-        .setDescription('ping someone 1 to 5 times')
+        .setName("ping")
+        .setDescription("ping someone 1 to 5 times")
         .addUserOption(option =>
             option
                 .setName("user")
