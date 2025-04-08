@@ -83,7 +83,7 @@ module.exports = {
         }
 
         try {
-            if (file.contentType === "video/quicktime") {
+            if (file.contentType.split("/")[0] === "video") {
                 await interaction.followUp("💊 🕒 GEORGE DROYD IS PROCCESSIN YO VIDEO 🕒 💊");
                 let response = await fetch(file.url);
                 let arrayBuffer = await response.arrayBuffer();
@@ -99,7 +99,7 @@ module.exports = {
         }
 
         try {    
-            if (file.contentType === "audio/mpeg") {
+            if (file.contentType.split("/")[0] === "audio") {
                 await interaction.followUp("💊 🕒 GEORGE DROYD IS PROCCESSIN YO BEAT 🕒 💊");
                 let response = await fetch(file.url);
                 let arrayBuffer = await response.arrayBuffer();
@@ -114,14 +114,23 @@ module.exports = {
             return;
         }
 
-        await interaction.followUp("💊 ✅ GEORGE DROYD ACTIVATED: YO SHIT IS UP ✅ 💊");
 
         if (file.contentType.split("/")[0] === "image") {
             embed.setImage(file.url)
+            for (let i = 0; i < quantity; ++i) {
+                await interaction.followUp({ embeds: [embed] });
+                return;
+            }
         }
 
+        // triggered when file is not Image/Video/Audio
+        const response = await fetch(file.url);
+        const arrayBuffer = await response.arrayBuffer();
+
+        await interaction.followUp("💊 ✅ GEORGE DROYD ACTIVATED: YO SHIT IS UP ✅ 💊");
+        
         for (let i = 0; i < quantity; ++i) {
-            await interaction.followUp({ embeds: [embed] });
+            await interaction.followUp({ files: [{ name: file.name, attachment: Buffer.from(arrayBuffer) }] });
         }
     },
 };

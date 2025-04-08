@@ -5,6 +5,10 @@ const { logWrite } = require('./logger.js');
 const fs = require("node:fs");
 const path = require("node:path");
 
+function formatOptionsUsed(options) {
+    return options.map(option => `[${option.name}: ${option.value}]`).join(' , ');
+}
+
 const client = new Client({ intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
@@ -35,19 +39,21 @@ client.once(Events.ClientReady, readyClient => {
 });
 
 client.on(Events.InteractionCreate, async interaction => {
+    let optionsUsed = interaction.options._hoistedOptions.map(({ name, value }) => ({ name, value }));
+
     if (!interaction.isChatInputCommand()) return;
     if (!allowedUserIDs.includes(parseInt(interaction.user.id))) { // making sure fake niggas won't use the bot
 
-        console.log(`ABORT ❌ /${interaction.commandName} used by ${interaction.member.user.username}`);
-        logWrite(`ABORT ❌ /${interaction.commandName} used by ${interaction.member.user.username}`);
+        console.log(`[INFO] ABORT ❌ /${interaction.commandName} used by ${interaction.member.user.username} with options ${formatOptionsUsed(optionsUsed)}`);
+        logWrite(`[INFO] ABORT ❌ /${interaction.commandName} used by ${interaction.member.user.username} with options ${formatOptionsUsed(optionsUsed)}`);
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         await interaction.followUp("💊 ⛔ GEORGE DROYD ERROR: GEORGE DROYD DOES NOT RESPOND TO FAKE ASS NIGGAS ⛔ 💊");
         return;
     }
 
-    console.log(`SUCCESS ✅ /${interaction.commandName} used by ${interaction.member.user.username}`);
-    logWrite(`SUCCESS ✅ /${interaction.commandName} used by ${interaction.member.user.username}`);
+    console.log(`[INFO] SUCCESS ✅ /${interaction.commandName} used by ${interaction.member.user.username} with options ${formatOptionsUsed(optionsUsed)}`);
+    logWrite(`[INFO] SUCCESS ✅ /${interaction.commandName} used by ${interaction.member.user.username} with options ${formatOptionsUsed(optionsUsed)}`);
 
     const command = interaction.client.commands.get(interaction.commandName);
 
@@ -61,9 +67,9 @@ client.on(Events.InteractionCreate, async interaction => {
     } catch (error) {
         console.error(error);
         if (interaction.replied || interaction.deferred) {
-            await interaction.followUp({ content: 'There was an error while executing this command!', flags: MessageFlags.Ephemeral });
+            await interaction.followUp({ content: "There was an error while executing this command!", flags: MessageFlags.Ephemeral });
         } else {
-            await interaction.reply({ content: 'There was an error while executing this command!', flags: MessageFlags.Ephemeral });
+            await interaction.reply({ content: "There was an error while executing this command!", flags: MessageFlags.Ephemeral });
         }
     }
 });
