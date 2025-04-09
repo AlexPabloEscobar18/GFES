@@ -49,8 +49,8 @@ module.exports = {
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         const embed = new EmbedBuilder();
-        embed.setColor("DarkRed")
-        embed.setTitle(interaction.options.getString("title") !== null ? interaction.options.getString("title") : "GEORGE DROYD")
+        embed.setColor("DarkRed");
+        embed.setTitle(interaction.options.getString("title") !== null ? interaction.options.getString("title") : "GEORGE DROYD");
 
         if (interaction.options.getString("description") !== null) embed.setDescription(interaction.options.getString("description"));
         if (interaction.options.getString("footer") !== null) embed.setFooter({ text: interaction.options.getString("footer") });
@@ -70,7 +70,7 @@ module.exports = {
                 return;
             }
         }
-        embed.setThumbnail(thumbnail)
+        embed.setThumbnail(thumbnail);
 
         if (quantity > 5 || quantity < 1) {
             await interaction.followUp("💊 ❌ GEORGE DROYD ERROR: MAXIMUM QUANTITY IS 5 NIGGA! ❌ 💊");
@@ -87,7 +87,6 @@ module.exports = {
                 await interaction.followUp("💊 🕒 GEORGE DROYD IS PROCCESSIN YO VIDEO 🕒 💊");
                 let response = await fetch(file.url);
                 let arrayBuffer = await response.arrayBuffer();
-
                 for (let i = 0; i < quantity; ++i) {
                     await interaction.followUp({ files: [{ name: file.name, attachment: Buffer.from(arrayBuffer) }] });
                 }
@@ -103,7 +102,6 @@ module.exports = {
                 await interaction.followUp("💊 🕒 GEORGE DROYD IS PROCCESSIN YO BEAT 🕒 💊");
                 let response = await fetch(file.url);
                 let arrayBuffer = await response.arrayBuffer();
-
                 for (let i = 0; i < quantity; ++i) {
                     await interaction.followUp({ files: [{ name: file.name, attachment: Buffer.from(arrayBuffer) }] });
                 }
@@ -116,11 +114,12 @@ module.exports = {
 
 
         if (file.contentType.split("/")[0] === "image") {
-            embed.setImage(file.url)
+            embed.setImage(file.url);
+            await interaction.followUp("💊 ✅ GEORGE DROYD ACTIVATED: YO SHIT IS UP ✅ 💊");
             for (let i = 0; i < quantity; ++i) {
                 await interaction.followUp({ embeds: [embed] });
-                return;
             }
+            return;
         }
 
         // triggered when file is not Image/Video/Audio

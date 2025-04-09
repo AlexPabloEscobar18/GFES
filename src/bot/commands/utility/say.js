@@ -15,6 +15,11 @@ module.exports = {
         const msg = interaction.options.getString("message");
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+		
+		if (msg.length > 2000) {
+			await interaction.followUp("💊 ❌ GEORGE DROYD ERROR: YOUR MESSAGE IS TOO BIG ❌ 💊");
+			return;
+		}
 
         await interaction.followUp("💊 ✅ GEORGE DROYD ACTIVATED: YO VOICE IS HEARD ✅ 💊");
 

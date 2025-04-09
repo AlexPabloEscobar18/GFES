@@ -1,13 +1,10 @@
 const { Client, Events, GatewayIntentBits, Collection, MessageFlags } = require('discord.js');
 const { token, allowedUserIDs } = require('./config.json');
+
 const { logWrite } = require('./logger.js');
 
 const fs = require("node:fs");
 const path = require("node:path");
-
-function formatOptionsUsed(options) {
-    return options.map(option => `[${option.name}: ${option.value}]`).join(' , ');
-}
 
 const client = new Client({ intents: [
     GatewayIntentBits.Guilds,
@@ -41,19 +38,21 @@ client.once(Events.ClientReady, readyClient => {
 client.on(Events.InteractionCreate, async interaction => {
     let optionsUsed = interaction.options._hoistedOptions.map(({ name, value }) => ({ name, value }));
 
+    // formatting optionsUsed for logging
+    optionsUsed = Object.keys(optionsUsed).length > 0 ? optionsUsed.map(optionsUsed => `[ [${optionsUsed.name}: ${optionsUsed.value}] ]`).join(' , ') : "[ No Options ]";
+
     if (!interaction.isChatInputCommand()) return;
     if (!allowedUserIDs.includes(parseInt(interaction.user.id))) { // making sure fake niggas won't use the bot
-
-        console.log(`[INFO] ABORT ❌ /${interaction.commandName} used by ${interaction.member.user.username} with options ${formatOptionsUsed(optionsUsed)}`);
-        logWrite(`[INFO] ABORT ❌ /${interaction.commandName} used by ${interaction.member.user.username} with options ${formatOptionsUsed(optionsUsed)}`);
+        console.log(`[INFO] ABORT ❌ /${interaction.commandName} used by ${interaction.member.user.username} with options ${optionsUsed}`);
+        logWrite(`[INFO] ABORT ❌ /${interaction.commandName} used by ${interaction.member.user.username} with options ${optionsUsed}`);
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         await interaction.followUp("💊 ⛔ GEORGE DROYD ERROR: GEORGE DROYD DOES NOT RESPOND TO FAKE ASS NIGGAS ⛔ 💊");
         return;
     }
 
-    console.log(`[INFO] SUCCESS ✅ /${interaction.commandName} used by ${interaction.member.user.username} with options ${formatOptionsUsed(optionsUsed)}`);
-    logWrite(`[INFO] SUCCESS ✅ /${interaction.commandName} used by ${interaction.member.user.username} with options ${formatOptionsUsed(optionsUsed)}`);
+    console.log(`[INFO] SUCCESS ✅ /${interaction.commandName} used by ${interaction.member.user.username} with options ${optionsUsed}`);
+    logWrite(`[INFO] SUCCESS ✅ /${interaction.commandName} used by ${interaction.member.user.username} with options ${optionsUsed}`);
 
     const command = interaction.client.commands.get(interaction.commandName);
 
